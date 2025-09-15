@@ -452,7 +452,9 @@ export class ModdedDex {
 			}
 			return dataObject[dataType];
 		} catch (e: any) {
-			if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
+			const isNodeModuleNotFound = e.code === 'MODULE_NOT_FOUND' || e.code === 'ENOENT';
+			const isDotNetModuleNotFound = e.hostException?.InnerException?.Message === 'Error: MODULE_NOT_FOUND';
+			if (!isNodeModuleNotFound && !isDotNetModuleNotFound) {
 				throw e;
 			}
 		}

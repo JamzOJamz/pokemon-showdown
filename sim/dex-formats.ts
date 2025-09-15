@@ -587,7 +587,9 @@ export class DexFormats {
 				throw new TypeError(`Exported property 'Formats' from "./config/custom-formats.ts" must be an array`);
 			}
 		} catch (e: any) {
-			if (e.code !== 'MODULE_NOT_FOUND' && e.code !== 'ENOENT') {
+			const isNodeModuleNotFound = e.code === 'MODULE_NOT_FOUND' || e.code === 'ENOENT';
+			const isDotNetModuleNotFound = e.hostException?.InnerException?.Message === 'Error: MODULE_NOT_FOUND';
+			if (!isNodeModuleNotFound && !isDotNetModuleNotFound) {
 				throw e;
 			}
 		}
